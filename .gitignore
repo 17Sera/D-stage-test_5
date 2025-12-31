@@ -3,6 +3,7 @@
 !*/
 !/nemu/*
 !/out/*
+!/patch/*
 !/nvboard/*
 !/am-kernels/*
 !/nexus-am/*
