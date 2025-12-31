@@ -44,8 +44,17 @@ $(IMAGE_BIN): $(IMAGE).elf $(HELLO_TEMPLATE)
 	@mv $@.tmp $@
 
 
+image: $(IMAGE_BIN)
+	@$(OBJDUMP) -d $(IMAGE).elf > $(IMAGE).txt
 
 run: insert-arg
-	echo "TODO: add command here to run simulation"
+	$(MAKE) -C $(NPC_HOME) clean-trace
+	$(MAKE) -C $(NPC_HOME) clean
+	$(MAKE) -C $(NPC_HOME) ISA=$(ISA) run IMG=$(IMG) ELF=$(ELF)
+	$(info [DEBUG] IMG = $(IMG))
+
+
+# run: insert-arg
+# 	echo "TODO: add command here to run simulation"
 
 .PHONY: insert-arg

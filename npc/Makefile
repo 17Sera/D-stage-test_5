@@ -1,12 +1,13 @@
 MODULE = ysyxSoCFull
 #   ysyx_25080202
 CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp")
-VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")		
-VSRCS += $(shell find $(abspath ../ysyxSoC/ready-to-run/D-stage/*) -name "*.v")
-VSRCS += $(shell find $(abspath ../ysyxSoC/perip/*) -name "*.v")	
+# VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")		
+VSRCS = $(shell find $(abspath ./) -name "*.v")		
+VSRCS += $(shell find $(abspath ../patch/ysyxSoC/ready-to-run/D-stage/*) -name "*.v")
+VSRCS += $(shell find $(abspath ../patch/ysyxSoC/perip/*) -name "*.v")	
 
 
-YSYXSOC_PATH = $(NPC_HOME)/../ysyxSoC
+YSYXSOC_PATH = $(NPC_HOME)/../patch/ysyxSoC
 YSYXSOC_PERIP_PATH = $(YSYXSOC_PATH)/perip
 YSYXSOC_UART_PATH = $(YSYXSOC_PERIP_PATH)/uart16550/rtl/
 YSYXSOC_SPI_PATH = $(YSYXSOC_PERIP_PATH)/spi/rtl/
