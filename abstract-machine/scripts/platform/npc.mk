@@ -9,21 +9,18 @@ AM_SRCS := riscv/npc/start.S \
            platform/dummy/mpe.c
 
 CFLAGS    += -fdata-sections -ffunction-sections
-LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
-						 --defsym=_pmem_start=0x30000000 --defsym=_entry_offset=0x0
+LDSCRIPTS += $(AM_HOME)/scripts/linker.ld
+LDFLAGS   += --defsym=_pmem_start=0x80000000 --defsym=_entry_offset=0x0
 LDFLAGS   += --gc-sections -e _start
-##
-NPCFLAGS += -l $(shell dirname $(IMAGE).elf)/npc-log.txt
-# NPCFLAGS += -l ./log/npc-log.txt
-NPCFLAGS += -e $(IMAGE).elf
-NPCFLAGS += -b
-# NPCFLAGS += -d $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
 
+MAINARGS_MAX_LEN = 64
+MAINARGS_PLACEHOLDER = the_insert-arg_rule_in_Makefile_will_insert_mainargs_here
+CFLAGS += -DMAINARGS_MAX_LEN=$(MAINARGS_MAX_LEN) -DMAINARGS_PLACEHOLDER=$(MAINARGS_PLACEHOLDER)
 
-CFLAGS += -DMAINARGS=\"$(mainargs)\"
-.PHONY: $(AM_HOME)/am/src/riscv/npc/trm.c
+insert-arg: image
+	@python $(AM_HOME)/tools/insert-arg.py $(IMAGE).bin $(MAINARGS_MAX_LEN) $(MAINARGS_PLACEHOLDER) "$(mainargs)"
 
-# image: $(IMAGE).elf
+# image: image-dep
 # 	@$(OBJDUMP) -d $(IMAGE).elf > $(IMAGE).txt
 # 	@echo + OBJCOPY "->" $(IMAGE_REL).bin
 # 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
@@ -46,9 +43,9 @@ $(IMAGE_BIN): $(IMAGE).elf $(HELLO_TEMPLATE)
 	@dd if=$< of=$@.tmp bs=1 seek=$(ELF_OFFSET) conv=notrunc 2>/dev/null
 	@mv $@.tmp $@
 
-##
-run: image
-	$(MAKE) -C $(NPC_HOME) ISA=$(ISA) run ARGS="$(NPCFLAGS)" IMG=$(IMAGE).bin
 
-# gdb: image
-# 	$(MAKE) -C $(NPC_HOME) ISA=$(ISA) gdb ARGS="$(NPCFLAGS)" IMG=$(IMAGE).bin
+
+run: insert-arg
+	echo "TODO: add command here to run simulation"
+
+.PHONY: insert-arg

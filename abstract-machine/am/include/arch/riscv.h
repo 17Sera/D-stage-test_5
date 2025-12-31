@@ -7,25 +7,11 @@
 #define NR_REGS 32
 #endif
 
-
-// struct Context {
-//   // TODO: fix the order of these members to match trap.S
-//   #ifdef __riscv_e
-//     uintptr_t gpr[16];
-//   #else
-//   uintptr_t gpr[32];
-//   #endif
-//   uintptr_t mcause, mstatus, mepc;
-//   void *pdir;
-//   uintptr_t np;
-// };
-
-struct Context { //上下文结构体
+struct Context {
   // TODO: fix the order of these members to match trap.S
-  uintptr_t gpr[NR_REGS], mcause, mstatus, mepc;
+  uintptr_t mepc, mcause, gpr[NR_REGS], mstatus;
   void *pdir;
 };
-
 
 #ifdef __riscv_e
 #define GPR1 gpr[15] // a5

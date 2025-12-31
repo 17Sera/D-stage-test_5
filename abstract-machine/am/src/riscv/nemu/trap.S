@@ -31,7 +31,7 @@ f(30) f(31)
 #define PUSH(n) STORE concat(x, n), (n * XLEN)(sp);
 #define POP(n)  LOAD  concat(x, n), (n * XLEN)(sp);
 
-#define CONTEXT_SIZE  ((NR_REGS + 3 + 1) * XLEN)
+#define CONTEXT_SIZE  ((NR_REGS + 3) * XLEN)
 #define OFFSET_SP     ( 2 * XLEN)
 #define OFFSET_CAUSE  ((NR_REGS + 0) * XLEN)
 #define OFFSET_STATUS ((NR_REGS + 1) * XLEN)
@@ -57,12 +57,10 @@ __am_asm_trap:
   or t1, t1, a0
   csrw mstatus, t1
 
-  mv a0, sp                   // 保存当前进程的上下文，栈指针sp复制到寄存器a0，a0是用于传递参数的寄存器
-  jal __am_irq_handle
+  mv a0, sp
+  call __am_irq_handle
 
-  mv sp, a0                   // 进入schedule函数   (由schedule汇编代码可知，current->cp放在了a0)
-
-  LOAD t1, OFFSET_STATUS(sp)  // 恢复上下文
+  LOAD t1, OFFSET_STATUS(sp)
   LOAD t2, OFFSET_EPC(sp)
   csrw mstatus, t1
   csrw mepc, t2
@@ -70,4 +68,4 @@ __am_asm_trap:
   MAP(REGS, POP)
 
   addi sp, sp, CONTEXT_SIZE
-  mret                        //mret将PC设置为mepc,跳转到kcontext里注册的f，陷入死循环
+  mret

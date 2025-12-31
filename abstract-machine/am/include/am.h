@@ -26,8 +26,8 @@ typedef struct {
     EVENT_NULL = 0,
     EVENT_YIELD, EVENT_SYSCALL, EVENT_PAGEFAULT, EVENT_ERROR,
     EVENT_IRQ_TIMER, EVENT_IRQ_IODEV,
-  } event; //event表示事件编号
-  uintptr_t cause, ref; //一些描述事件的补充信息，msg是事件信息字符串
+  } event;
+  uintptr_t cause, ref;
   const char *msg;
 } Event;
 

@@ -2,13 +2,8 @@
 #include <klib.h>
 #include <klib-macros.h>
 
-//-----------------------------------------------------------
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 static unsigned long int next = 1;
-static char* start_addr;    // addr初始值    native运行则注释，nemu运行则需要
-static bool init_flag = 0;  // 初始化的标志, 初始化完成后置1
-// static char *hbrk;
-//-----------------------------------------------------------
 
 int rand(void) {
   // RAND_MAX assumed to be 32767
@@ -34,7 +29,6 @@ int atoi(const char* nptr) {
   return x;
 }
 
-//-----------------------------------------------------------------------------
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C runtime.
   // Therefore do not call panic() here, else it will yield a dead recursion:
@@ -52,7 +46,6 @@ void *malloc(size_t size) {
 #endif
   return NULL;
 }
-
 
 void free(void *ptr) {
 }

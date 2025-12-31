@@ -14,7 +14,7 @@ SECTIONS {
     *(.rodata*)
   }
   .data : {
-    *(.data)
+    *(.data*)
   } : data
   edata = .;
   _data = .;
@@ -31,12 +31,3 @@ SECTIONS {
   _end = .;
   _heap_start = ALIGN(0x1000);
 }
-
-/*
-0x0000: 代码段（.text）
-0x1000: 数据段（.data）
-0x2000: BSS段（.bss）
-0x3000: 栈顶（对齐到0x1000的边界）
-0xB000: 栈底（栈大小为32KB）
-0xB000: 堆起始地址（对齐到0x1000的边界）
-*/
