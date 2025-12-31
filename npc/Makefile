@@ -1,6 +1,6 @@
 MODULE = ysyxSoCFull
 #   ysyx_25080202
-CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp")
+# CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp")
 # VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")		
 VSRCS = $(shell find $(abspath ./) -name "*.v")		
 VSRCS += $(shell find $(abspath ../patch/ysyxSoC/ready-to-run/D-stage/*) -name "*.v")
@@ -12,7 +12,7 @@ YSYXSOC_PERIP_PATH = $(YSYXSOC_PATH)/perip
 YSYXSOC_UART_PATH = $(YSYXSOC_PERIP_PATH)/uart16550/rtl/
 YSYXSOC_SPI_PATH = $(YSYXSOC_PERIP_PATH)/spi/rtl/
 
-INC_PATH = $(NPC_HOME)/include/	
+# INC_PATH = $(NPC_HOME)/include/	
 LIBS = -lreadline   # 链接的库文件 link the <readline> lib
 LIBS += -ldl        # 链接的库文件 link the <dlfcn> lib
 LIBS += $(shell llvm-config-11 --libs)	
@@ -25,7 +25,8 @@ VERILATOR_FLAGS += --trace
 VERILATOR_FLAGS += --timescale "1ns/1ns"
 VERILATOR_FLAGS += --no-timing
 VERILATOR_FLAGS += --top-module $(MODULE) -cc $(VSRCS) --exe $(CSRCS)
-VERILATOR_FLAGS += -I$(INC_PATH) -I$(YSYXSOC_UART_PATH) -I$(YSYXSOC_SPI_PATH)
+VERILATOR_FLAGS += -I$(YSYXSOC_UART_PATH) -I$(YSYXSOC_SPI_PATH)
+# VERILATOR_FLAGS += -I$(INC_PATH) -I$(YSYXSOC_UART_PATH) -I$(YSYXSOC_SPI_PATH)
 VERILATOR_FLAGS += --prof-c --prof-cfuncs --prof-exec # 启用C代码性能分析
 VERILATOR_FLAGS += --autoflush	#自动刷新输出缓冲区
 # VERILATOR_FLAGS += --x-assign fast --x-initial fast	# 提高仿真速度
@@ -130,8 +131,8 @@ lint: $(MODULE).v
 
 .PHONY: clean
 clean:
-	rm -rf .zhong.*;
-	rm -rf ./obj_dir
-	rm -rf waveform.vcd
-	rm waveform.vcd.hier
-	rm ./log/*
+	rm -rf .zhong.* || true
+	rm -rf ./obj_dir || true
+	rm -f waveform.vcd || true
+	rm -f waveform.vcd.hier || true
+	rm ./log/*  || true
