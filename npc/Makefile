@@ -1,5 +1,5 @@
-MODULE = ysyx_25080202
-# ysyxSoCFull
+MODULE = ysyxSoCFull
+#   ysyx_25080202
 CSRCS = $(shell find $(abspath ./csrc) -name "*.cpp")
 VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")		
 VSRCS += $(shell find $(abspath ../ysyxSoC/ready-to-run/D-stage/*) -name "*.v")
