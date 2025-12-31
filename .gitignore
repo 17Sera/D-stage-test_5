@@ -2,6 +2,7 @@
 *
 !*/
 !/nemu/*
+!/ysyxSoC/*
 !/out/*
 !/patch/*
 !/nvboard/*
